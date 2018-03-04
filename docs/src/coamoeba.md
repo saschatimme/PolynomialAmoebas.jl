@@ -1,0 +1,6 @@
+# Coamoeba
+
+```@docs
+coamoeba
+Coamoeba
+```

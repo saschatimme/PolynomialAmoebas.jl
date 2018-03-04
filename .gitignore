@@ -1,0 +1,14 @@
+*.jl.cov
+*.jl.*.cov
+*.jl.mem
+**/.ipynb_checkpoints/
+gks.svg
+*.png
+!docs/**/*.png
+*.pdf
+*.gif
+*.mov
+*.log
+*.ply
+*.mp4
+*.svg
