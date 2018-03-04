@@ -1,7 +1,7 @@
-# Amoebas
+# Amoebas.jl
 
-[![build status](https://gitlab.com/saschatimme/Amoebas.jl/badges/master/build.svg)](https://gitlab.com/saschatimme/Amoebas.jl/commits/master)
-[![coverage report](https://gitlab.com/saschatimme/Amoebas.jl/badges/master/coverage.svg)](https://gitlab.com/saschatimme/Amoebas.jl/commits/master)
+<!--[![build status](https://gitlab.com/saschatimme/Amoebas.jl/badges/master/build.svg)](https://gitlab.com/saschatimme/Amoebas.jl/commits/master)
+[![coverage report](https://gitlab.com/saschatimme/Amoebas.jl/badges/master/coverage.svg)](https://gitlab.com/saschatimme/Amoebas.jl/commits/master)-->
 
 
 ## Installation
