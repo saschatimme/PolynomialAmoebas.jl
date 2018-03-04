@@ -7,7 +7,7 @@
 ## Installation
 Just do
 ```julia
-julia> Pkg.clone("...")
+julia> Pkg.clone("git@gitlab.tubit.tu-berlin.de:sascha.timme/Amoebas.jl.git")
 ```
 in a running Julia session.
 
