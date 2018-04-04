@@ -36,21 +36,21 @@ amoeba(x^2 + y^2 + 1, alg=Greedy(), resolution=800)
 ```
 
 ## `Polygonal()`
-This algorithm computes an approximation of the amoeba 𝒜(𝑓) in the provided `domain` Ω
-by computing a set of polygons 𝒫 with |𝒫| ⊂ Ω such that the union of these polygons approximates 𝒜(𝑓) ∩ Ω
+This algorithm computes an approximation of the amoeba ``\\mathcal{A}(f)`` in the provided `domain` Ω
+by computing a set of polygons 𝒫 with |𝒫| ⊂ Ω such that the union of these polygons approximates ``\\mathcal{A}(f)`` ∩ Ω
 from the outside.
 
 The possible (optional) arguments are
 * `domain`: A tuple in the form `(xmin, xmax, ymin, ymax)` which defines a section Ω
-for which the amoeba 𝒜(𝑓) is computed. This domain has to be such that the intersection
-Ω ∩ 𝒜(𝑓) still captures the correct topology of 𝒜(𝑓).
-* `accuracy=0.01`: The maximal allowed error |𝒫 - 𝒜(𝑓) ∩ Ω|. Note that we only compute an upper limit of the error.
+for which the amoeba ``\\mathcal{A}(f)`` is computed. This domain has to be such that the intersection
+Ω ∩ ``\\mathcal{A}(f)`` still captures the correct topology of ``\\mathcal{A}(f)``.
+* `accuracy=0.01`: The maximal allowed error |𝒫 - ``\\mathcal{A}(f)`` ∩ Ω|. Note that we only compute an upper limit of the error.
 The algorithms stops if the given accuracy is reached.
-* `spine`: This algorithm needs the spine of 𝒜(𝑓).
+* `spine`: This algorithm needs the spine of ``\\mathcal{A}(f)``.
 * `minimal_component_size=0.01`: The minimal size of the components of the complement. This is only used if no spine
 is passed explicitly.
 * `iterations=2000`: The maximal number of iterations.
-* `vertices_accuracy=accuracy*1e-3`: During the algorithm we approximate points on the boundary of 𝒜(𝑓). This
+* `vertices_accuracy=accuracy*1e-3`: During the algorithm we approximate points on the boundary of ``\\mathcal{A}(f)``. This
 is the accuracy with which we compute them. Note hat this influences the minimal error of the approximation
 and it should always be some magnitudes smaller than `accuracy`.
 * `membership_options=[MembershipTestOptions()](@ref)`: As a subroutine a membership test is used.
@@ -58,7 +58,7 @@ and it should always be some magnitudes smaller than `accuracy`.
 
 ## `Greedy()`, `Simple()`, `ArchTrop()`
 
-These algorithms are all approximations of the amoeba 𝒜(𝑓) based on a grid. This basically
+These algorithms are all approximations of the amoeba ``\\mathcal{A}(f)`` based on a grid. This basically
 applies the membership test for different grid points. `Greedy()` is the fastest and
 `Simple()` the slowest.
 The grid can be passed explicitly, otherwise it will be computed based on a heuristic.

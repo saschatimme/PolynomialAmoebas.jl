@@ -3,6 +3,6 @@
 # Create variables
 @polyvar x y
 # construct a polynomial
-f = x^2*y + y^2 + 3x^2*y^3 + y^4 + x^4*y^4</code></pre><p>To compute the amoeba of <code>f</code> we then can simply do</p><pre><code class="language-none">A = amoeba(f)</code></pre><p>To visualize the amoeba we use the plotting capabilities provided by <a href="http://docs.juliaplots.org/latest/">Plots.jl</a>. Just do</p><pre><code class="language-none">using Plots
+f = x^2*y + y^2 + 3x^2*y^3 + y^4 + x^4*y^4</code></pre><p>To compute the amoeba of <code>f</code> we then can simply do</p><pre><code class="language-julia">A = amoeba(f)</code></pre><p>To visualize the amoeba we use the plotting capabilities provided by <a href="http://docs.juliaplots.org/latest/">Plots.jl</a>. Just do</p><pre><code class="language-julia">using Plots
 
 plot(A)</code></pre><p>and you obtain <img src="assets/amoeba.png" alt="amoeba text"/></p><footer><hr/><a class="next" href="amoeba.html"><span class="direction">Next</span><span class="title">Amoeba</span></a></footer></article></body></html>

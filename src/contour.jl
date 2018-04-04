@@ -4,10 +4,10 @@ export contour
 """
     contour(f; options...)
 
-Compute the contour 𝐶(𝑓) of the amoeba 𝒜(𝑓).
+Compute the contour 𝐶(𝑓) of the amoeba ``\\mathcal{A}(f)``.
 
 ## Example
-```
+```julia
 @polyvar x y
 
 contour(x^2+y^2+1)

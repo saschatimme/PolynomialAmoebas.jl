@@ -15,12 +15,12 @@ f = x^2*y + y^2 + 3x^2*y^3 + y^4 + x^4*y^4
 ```
 
 To compute the amoeba of `f` we then can simply do
-```
+```julia
 A = amoeba(f)
 ```
 To visualize the amoeba we use the plotting capabilities provided by [Plots.jl](http://docs.juliaplots.org/latest/).
 Just do
-```
+```julia
 using Plots
 
 plot(A)
