@@ -20,7 +20,7 @@ points(C::Contour2D) = C.ps
 function Base.show(io::IO, A::Contour2D)
     println(io, "Contour2D:")
     println(io, " * domain: ", limits(A.grid))
-    println(io, " * number of points: ", points(A))
+    println(io, " * number of points: ", length(points(A)))
 end
 
 function Base.show(io::IO, mime::MIME"text/html", A::Contour2D)

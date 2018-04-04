@@ -26,8 +26,8 @@ for which the contour 𝐶(𝑓) is computed.
 function contour(f::MP.AbstractPolynomial;
     domain=amoeba_carcase_domain_heuristic(f, factor=2.0),
     res::NTuple{2, Int}=(600, 600),
-    samples_off_axis::Int=2*MP.maxdegree(f)^2,
-    membership_options=MembershipTestOptions(ntries=10, maxiters=50, tol=1e-8))
+    samples_off_axis::Int=2*MP.maxdegree(f),
+    membership_options=MembershipTestOptions(ntries=10, maxiters=30, tol=1e-8))
 
     grid = Grid2D(domain..., res...)
 

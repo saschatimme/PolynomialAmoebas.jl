@@ -11,8 +11,6 @@ struct ConvexHull{T<:Real}
     vertices::Vector{Int}
     simplices::Vector{Vector{Int}}
     equations::Matrix{T}
-    area::Float64
-    volume::Float64
 end
 
 addone(xs) = map(x -> x + 1, xs)
@@ -23,9 +21,7 @@ function convexhull(x::Matrix{T}) where T<:Real
     vertices = addone(convert(Vector{Int}, py["vertices"]))
     simplices = addone.(convert(Vector{Vector{Int}}, py["simplices"]))
     equations = convert(Matrix{T}, py["equations"])
-    area = convert(Float64, py["area"])
-    volume = convert(Float64, py["volume"])
-    ConvexHull(points, vertices, simplices, equations, area, volume)
+    ConvexHull(points, vertices, simplices, equations)
 end
 """
     convexhull_vertices(line::Vector{Tuple{Int, Int}})
