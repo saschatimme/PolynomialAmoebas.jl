@@ -51,7 +51,7 @@ function spine(f::MP.AbstractPolynomial;
 end
 
 function spine(f::MP.AbstractPolynomial, A::Bitmap2D; nsamples=1024)
-    p = SP.Polynomial(Complex128, f)
+    p = SP.Polynomial((1.0+0.0im)*f)
     cc, _ = components_complement(A, AmoebaFiber2D(f), p, nsamples=nsamples)
 
     ronkincoeffs = ronkincoefficients(p, cc)

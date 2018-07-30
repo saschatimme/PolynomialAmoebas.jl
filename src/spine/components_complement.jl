@@ -307,8 +307,7 @@ function order(f::SP.Polynomial, w, working_vec::AbstractVector, nsamples=128)
         # v1 += p1(θ)
         c1u = c1 * u
         x = SVector(c1u, c2)
-        SP.gradient!(working_vec, f, x)
-        f_x = working_vec[1]
+        f_x = SP.gradient(f, x)[1]
         val = SP.evaluate(f, x)
         v1 += c1u * f_x / val
 
@@ -318,8 +317,7 @@ function order(f::SP.Polynomial, w, working_vec::AbstractVector, nsamples=128)
         # v2 += p1(θ)
         c2u = c2 * u
         x = SVector(c1, c2u)
-        SP.gradient!(working_vec, f, x)
-        f_y = working_vec[2]
+        f_y = SP.gradient(f, x)[2]
         val = SP.evaluate(f, x)
         v2 += c2u * f_y / val
     end

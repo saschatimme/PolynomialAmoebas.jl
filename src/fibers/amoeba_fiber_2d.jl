@@ -8,7 +8,7 @@ function AmoebaFiber2D(p::MP.AbstractPolynomialLike{S}, w=(0.0, 0.0)) where S
     @assert (length(vars) == 2) "Expected a bivariate polynomial, but got $(p)."
 
     T = realified_coefficient_type(S)
-    f_re, f_im = SP.Polynomial.(T, realify(p))
+    f_re, f_im = SP.Polynomial.(1.0 .* realify(p))
     AmoebaFiber2D(f_re, f_im, w)
 end
 
@@ -70,8 +70,10 @@ function jacobian(fiber::AmoebaFiber2D, θ, precomputed=false)
     x = precomputed ? fiber.x : phi!(fiber, θ)
     U = fiber.U
     @inbounds begin
-        SP.gradient!(U, fiber.f_re, x, 1)
-        # SP.gradient!(U, fiber.f_im, x, 2)
+        ∇f_re = SP.gradient(fiber.f_re, x)
+        for i=1:4
+            U[1, i] = ∇f_re[i]
+        end
         U[2, 3] = U[1, 1]
         U[2, 4] = U[1, 2]
         U[2, 1] = -U[1, 3]

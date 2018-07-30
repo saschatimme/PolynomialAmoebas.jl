@@ -8,10 +8,8 @@ module Amoebas
 
     import MultivariatePolynomials
     const MP = MultivariatePolynomials
-
-    include("super_polynomials.jl")
-    import .SuperPolynomials
-    const SP = SuperPolynomials
+    import StaticPolynomials
+    const SP = StaticPolynomials
 
     import DynamicPolynomials: @polyvar
 

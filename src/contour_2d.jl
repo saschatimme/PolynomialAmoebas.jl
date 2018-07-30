@@ -1,4 +1,4 @@
-export Contour2D
+export Contour2D, points
 
 """
     Contour2D

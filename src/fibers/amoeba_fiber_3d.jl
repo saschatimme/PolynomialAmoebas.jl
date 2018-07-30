@@ -8,7 +8,7 @@ function AmoebaFiber3D(p::MP.AbstractPolynomialLike{S}, w=(0.0, 0.0, 0.0)) where
     @assert (length(vars) == 3) "Expected a trivariate polynomial, but got $(p)."
 
     T = realified_coefficient_type(S)
-    f_re, f_im = SP.Polynomial.(T, realify(p))
+    f_re, f_im = SP.Polynomial.(1.0 .* realify(p))
 
     v = exp.(w)
     U = zeros(T, 2, 6)
@@ -84,8 +84,10 @@ function jacobian(fiber::AmoebaFiber3D, θ, precomputed=false)
     x = precomputed ? fiber.x : phi!(fiber, θ)
     U = fiber.U
     @inbounds begin
-        SP.gradient!(U, fiber.f_re, x, 1)
-        # SP.gradient!(U, fiber.f_im, x, 2)
+        ∇f_re = SP.gradient(fiber.f_re, x)
+        for i=1:6
+            U[1, i] = ∇f_re[i]
+        end
         U[2, 4] = U[1, 1]
         U[2, 5] = U[1, 2]
         U[2, 6] = U[1, 3]
@@ -109,7 +111,6 @@ function jacobian(fiber::AmoebaFiber3D, θ, precomputed=false)
         ∂im∂θ1 = muladd(U[2, 4], x[1], ∂im∂θ1)
         ∂im∂θ2 = muladd(U[2, 5], x[2], ∂im∂θ2)
         ∂im∂θ3 = muladd(U[2, 6], x[3], ∂im∂θ3)
-
 
         # SMatrix has column-major storage
         SMatrix{2,3}(∂re∂θ1, ∂im∂θ1, ∂re∂θ2, ∂im∂θ2, ∂re∂θ3, ∂im∂θ3)

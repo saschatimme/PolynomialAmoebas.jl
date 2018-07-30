@@ -17,9 +17,9 @@ function ContourFiber2D(p::MP.AbstractPolynomialLike, w_i=0.0; w1_fixed=true)
     append!(realvars, imagvars)
     vars = realvars
 
-    f_re = SP.Polynomial(Float64, fre, vars)
-    f_im = SP.Polynomial(Float64, fim, vars)
-    g = SP.Polynomial(Float64, g, vars)
+    f_re = SP.Polynomial(1.0 * fre, vars)
+    f_im = SP.Polynomial(1.0 * fim, vars)
+    g = SP.Polynomial(1.0 * g, vars)
 
     v_i = exp(w_i)
     exponents = SP.exponents.((f_re, f_im, g))
@@ -90,10 +90,15 @@ function jacobian(fiber::ContourFiber2D, u::AbstractVector, precomputed=false)
     x = precomputed ? fiber.x : phi!(fiber, u)
     U = fiber.U
     @inbounds begin
-        SP.gradient!(U, fiber.f_re, x, 1)
-        SP.gradient!(U, fiber.f_im, x, 2)
+        ∇f_re = SP.gradient(fiber.f_re, x)
+        ∇f_im = SP.gradient(fiber.f_im, x)
+        ∇g = SP.gradient(fiber.g, x)
+        for i=1:4
+            U[1, i] = ∇f_re[i]
+            U[2, i] = ∇f_im[i]
+            U[3, i] = ∇g[i]
+        end
     end
-    SP.gradient!(U, fiber.g, x, 3)
 
     @inbounds out = begin
         mx3, mx4 = -x[3], -x[4]

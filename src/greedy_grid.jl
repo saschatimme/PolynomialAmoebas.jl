@@ -4,15 +4,19 @@ function greedy_grid(F::AbstractFiber, grid, generator::StartValueGenerator,
     # queued = copy(bitmap.data)
     queue = copy(initial_queue)
 
-    Fs = [F]
-    for _=2:Threads.nthreads()
-        push!(Fs, deepcopy(F))
-    end
-    partition = partition_work(length(queue))
-    Threads.@threads for tid = 1:Threads.nthreads()
-        t_queue = queue[partition[tid]]
-        G = Fs[tid]
-        greedy_grid_kernel!(bitmap, queued, t_queue, G, grid, generator, options, callback)
+    if Threads.nthreads() > 1
+        Fs = [F]
+        for _=2:Threads.nthreads()
+            push!(Fs, deepcopy(F))
+        end
+        partition = partition_work(length(queue))
+        Threads.@threads for tid = 1:Threads.nthreads()
+            t_queue = queue[partition[tid]]
+            G = Fs[tid]
+            greedy_grid_kernel!(bitmap, queued, t_queue, G, grid, generator, options, callback)
+        end
+    else
+        greedy_grid_kernel!(bitmap, queued, queue, F, grid, generator, options, callback)
     end
 
     bitmap
@@ -181,7 +185,10 @@ function predict_startvalue!(out, F::ImaginaryFiber2D, x_known, y_known, y_targe
     xy = SVector(x_known[1], x_known[2], y_known[1], y_known[2])
     U = F.U
     @inbounds begin
-        SP.gradient!(U, F.f_re, xy, 1)
+        ∇f_re = SP.gradient(F.f_re, xy)
+        for i=1:4
+            U[1, i] = ∇f_re[i]
+        end
         U[2, 3] = U[1, 1]
         U[2, 4] = U[1, 2]
         U[2, 1] = -U[1, 3]

@@ -11,7 +11,7 @@ function ImaginaryFiber3D(p::MP.AbstractPolynomialLike{S}, y=(0.0, 0.0, 0.0)) wh
     @assert (length(vars) == 3) "Expected a trivariate polynomial, but got $(p)."
 
     T = realified_coefficient_type(S)
-    f_re, f_im = SP.Polynomial.(T, realify(p))
+    f_re, f_im = SP.Polynomial.( one(T) .* realify(p))
 
     ImaginaryFiber3D(f_re, f_im, float.(y), zeros(T, 2, 6))
 end
@@ -32,7 +32,10 @@ function jacobian(fiber::ImaginaryFiber3D, x::AbstractVector, precomputed=false)
     U = fiber.U
     xy = SVector(x[1], x[2], x[3], fiber.y[1], fiber.y[2], fiber.y[3])
     @inbounds begin
-        SP.gradient!(U, fiber.f_re, xy, 1)
+        ∇f_re = SP.gradient(fiber.f_re, xy)
+        for i=1:6
+            U[1, i] = ∇f_re[i]
+        end
         U[2, 4] = U[1, 1]
         U[2, 5] = U[1, 2]
         U[2, 6] = U[1, 3]

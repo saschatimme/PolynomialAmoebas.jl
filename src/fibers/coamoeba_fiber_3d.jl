@@ -8,7 +8,7 @@ function CoamoebaFiber3D(p::MP.AbstractPolynomialLike{S}, θ=(0.0, 0.0, 0.0)) wh
     @assert (length(vars) == 3) "Expected a trivariate polynomial, but got $(p)."
 
     T = realified_coefficient_type(S)
-    f_re, f_im = SP.Polynomial.(T, realify(p))
+    f_re, f_im = SP.Polynomial.(one(T) .* realify(p))
 
     sincosθ = _sincosθ3(θ)
     U = zeros(2, 6)
@@ -40,7 +40,10 @@ function jacobian(fiber::CoamoebaFiber3D, w, precomputed=false)
     x = precomputed ? fiber.x : phi!(fiber, w)
     U = fiber.U
     @inbounds begin
-        SP.gradient!(U, fiber.f_re, x, 1)
+        ∇f_re = SP.gradient(fiber.f_re, x)
+        for i=1:6
+            U[1, i] = ∇f_re[i]
+        end
         U[2, 4] = U[1, 1]
         U[2, 5] = U[1, 2]
         U[2, 6] = U[1, 3]
