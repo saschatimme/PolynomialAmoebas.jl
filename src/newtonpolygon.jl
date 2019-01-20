@@ -81,7 +81,7 @@ function newtonsubdivision(lattices, coeffs::AbstractVector{<:Real}, lowerhull=f
     if nterms == 3
         push!(subdivision, [1, 2, 3])
     elseif nterms > 3
-        liftedvertices = Matrix{Float64}(nterms, 3)
+        liftedvertices = Matrix{Float64}(undef, nterms, 3)
         for i in eachindex(lattices)
             liftedvertices[i, 1] = lattices[i][1]
             liftedvertices[i, 2] = lattices[i][2]

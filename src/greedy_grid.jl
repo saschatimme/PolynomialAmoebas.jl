@@ -1,5 +1,5 @@
 function greedy_grid(F::AbstractFiber, grid, generator::StartValueGenerator,
-    initial_queue::Vector{<:Integer},
+    initial_queue,
     bitmap=empty(grid), queued=copy(bitmap.data); callback=_do_nothing, options=MembershipTestOptions())
     # queued = copy(bitmap.data)
     queue = copy(initial_queue)

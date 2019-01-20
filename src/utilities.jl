@@ -1,6 +1,16 @@
 
 _isone(x::T) where T = x == one(T)
 
+function ind2sub(a, i)
+     i2s = CartesianIndices(a)
+     Tuple(i2s[i])
+end
+
+function sub2ind(a,i...)
+      s2i = LinearIndices(a)
+      s2i[i...]
+end
+
 function Base.isless(a::SVector{2}, b::SVector{2})
     if a[1] < b[1]
         return true
@@ -13,13 +23,13 @@ end
 
 function central_range(min, max, n)
     dx = (max - min) / n
-    linspace(min + 0.5dx, max - 0.5dx, n)
+    range(min + 0.5dx, stop=max - 0.5dx, length=n)
 end
 
 function partition_work(N)
     k = Threads.nthreads()
 
-    ls = linspace(1, N, k+1)
+    ls = range(1, stop=N, length=k+1)
     map(1:k) do i
         a = round(Int, ls[i])
         if i > 1
@@ -153,22 +163,22 @@ function fillrect!(M::BitMatrix, px::SVector{4, Int}, py::SVector{4, Int})
     m, n = size(M)
     left, right = max(1, minimum(px)), min(n, maximum(px))
     @inbounds for x=left:right
-        y1 = Nullable{Int}()
-        y2 = Nullable{Int}()
+        y1 = nothing
+        y2 = nothing
 
         j = 4
         for i=1:4
             if (px[i] <= x <= px[j]) || (px[j] <= x <= px[i])
                 # special case: adding the whole cut to ys
                 if px[i] == px[j]
-                    y1 = Nullable(py[i])
-                    y2 = Nullable(py[j])
+                    y1 = py[i]
+                    y2 = py[j]
                 else
                     y = round(Int, py[i] + (x - px[i]) / (px[j] - px[i]) * (py[j] - py[i]))
-                    if isnull(y1)
-                        y1 = Nullable(y)
-                    elseif isnull(y2) && y != get(y1)
-                        y2 = Nullable(y)
+                    if y1 === nothing
+                        y1 = y
+                    elseif y2 === nothing && y != y1
+                        y2 = y
                     end
                 end
             end
@@ -176,12 +186,14 @@ function fillrect!(M::BitMatrix, px::SVector{4, Int}, py::SVector{4, Int})
         end
 
         # if we only got a corner only add that value
-        if isnull(y2) && 1 <= get(y1) <= m
-            M[get(y1), x] = true
-        elseif !isnull(y1) && !isnull(y2)
-            a = max(min(get(y1),get(y2)), 1)
-            b = min(max(get(y1),get(y2)), m)
-            M[a:b, x] = true
+        if y2 === nothing && 1 <= y1 <= m
+            M[y1, x] = true
+        elseif y1 !== nothing && y2 !== nothing
+            a = max(min(y1, y2), 1)
+            b = min(max(y1, y2), m)
+            for k in a:b
+                M[k, x] = true
+            end
         end
     end
     return M

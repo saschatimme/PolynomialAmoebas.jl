@@ -155,7 +155,7 @@ function _amoeba(::ArchTrop, F::AmoebaFiber2D, f, grid, gen, options, callback)
 end
 
 function _amoeba(::Greedy, F::AmoebaFiber2D, f, grid, gen, options, callback)
-    initial_queue = find(grid_contour(f, grid).data)
+    initial_queue = findall(grid_contour(f, grid).data)
 
     greedy_grid(F, grid, gen, initial_queue, options=options, callback=callback)
 end

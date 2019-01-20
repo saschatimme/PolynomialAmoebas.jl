@@ -50,7 +50,7 @@ function Covering(S::Spine2D, xmin::Real, xmax::Real, ymin::Real, ymax::Real)
                 continue
             end
             p_start = intersection_cover(pillars[1], pillars[2], xmin, xmax, ymin, ymax)
-            unshift!(pillars, p_start)
+            pushfirst!(pillars, p_start)
             p_end = intersection_cover(pillars[end], pillars[end-1], xmin, xmax, ymin, ymax)
             push!(pillars, p_end)
         end

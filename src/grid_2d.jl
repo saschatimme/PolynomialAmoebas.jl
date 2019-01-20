@@ -21,6 +21,7 @@ function Grid2D(f::MP.AbstractPolynomial, res=600; factor=1.5)
     Grid2D(amoeba_carcase_domain_heuristic(f, factor=factor)..., res, res)
 end
 
+Base.broadcastable(G::Grid2D) = Ref(G)
 Base.size(G::Grid2D) = (length(G.xrange), length(G.yrange))
 Base.size(G::Grid2D, i) = size(G)[i]
 Base.length(G::Grid2D) = prod(size(G))

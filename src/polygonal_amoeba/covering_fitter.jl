@@ -99,18 +99,19 @@ end
     add2queue!(M, id_right)
 end
 
-
-Base.start(M::CoveringFitter) = 0
-@inline function Base.next(M::CoveringFitter, state)
-    next_step!(M)
-    M, state + 1
+function Base.iterate(M::CoveringFitter, state=nothing)
+    if state === nothing
+        next_step!(M)
+        M, state+1
+    elseif state > M.maximal_iterations || M.approximated_global_error < M.desired_maximal_error
+        return nothing
+    else
+        next_step!(M)
+        M, state + 1
+    end
 end
-@inline function Base.done(M::CoveringFitter, state)
-    return state > M.maximal_iterations ||
-        M.approximated_global_error < M.desired_maximal_error
-end
-Base.iteratorsize(::CoveringFitter) = Base.SizeUnknown()
-Base.eltype(::M) where {M<:CoveringFitter} = M
+Base.IteratorSize(::Type{<:CoveringFitter}) = Base.SizeUnknown()
+Base.eltype(::Type{<:CoveringFitter}) = M
 
 function initial_refinement!(covering::Covering, F::AbstractAmoebaFiber, startvalue_generator, ε, o::MembershipTestOptions)
     scalepillars!(covering) do origin, dir

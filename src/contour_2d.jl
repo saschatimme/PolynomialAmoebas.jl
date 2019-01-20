@@ -77,7 +77,7 @@ function _contour2D(F::ContourFiber2D, grid::Grid2D,
     xmin, xmax, ymin, ymax = limits(grid)
     # first pass
     w1s = xcoordinates(grid)
-    w2s = linspace(ymin, ymax, samples_off_axis)
+    w2s = range(ymin, stop=ymax, length=samples_off_axis)
 
     force_exit_y(x) = x[3] > ymax || x[3] < ymin
 
@@ -111,7 +111,7 @@ function _contour2D(F::ContourFiber2D, grid::Grid2D,
     for F in Fs
         fix_axis!(F, :w2)
     end
-    w1s = linspace(xcoordinates(grid)[1], xcoordinates(grid)[end], samples_off_axis)
+    w1s = range(xcoordinates(grid)[1], stop=xcoordinates(grid)[end], length=samples_off_axis)
     w2s = ycoordinates(grid)
     # w2_xs = Vector{Float64}()
     force_exit_x(x) = x[3] > xmax || x[3] < xmin
@@ -161,7 +161,7 @@ function _contour2D_grid(F::ContourFiber2D, grid::Grid2D,
 
     fix_axis!(F, :w1)
     Fs = [deepcopy(F) for _=2:Threads.nthreads()]
-    unshift!(Fs, F)
+    pushfirst!(Fs, F)
 
     B = Bitmap2D(grid)
 

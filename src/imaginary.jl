@@ -138,7 +138,7 @@ function _imaginary_projection(::Greedy, F::ImaginaryFiber3D, f, grid, gen, opti
 end
 
 function imaginary_by_amoeba(f, grid; options=MembershipTestOptions())
-    start_values = Matrix{SVector{2, Float64}}(size(grid))
+    start_values = Matrix{SVector{2, Float64}}(undef, size(grid)...)
     B = Bitmap2D(grid)
     m, n = size(B)
     function start_value_cb(result, k, bitmap)

@@ -19,6 +19,7 @@ function Grid3D(lims, res::Int)
         central_range(lims..., res))
 end
 
+Base.broadcastable(G::Grid3D) = Ref(G)
 Base.size(G::Grid3D) = (length(G.xrange), length(G.yrange), length(G.zrange))
 Base.size(G::Grid3D, i) = size(G)[i]
 Base.length(G::Grid3D) = prod(size(G))

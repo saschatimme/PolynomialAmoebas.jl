@@ -1,10 +1,9 @@
-__precompile__()
-
 module Amoebas
 
     using StaticArrays
     using RecipesBase
     using PyCall
+    using LinearAlgebra
 
     import MultivariatePolynomials
     const MP = MultivariatePolynomials

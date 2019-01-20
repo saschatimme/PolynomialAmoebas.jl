@@ -9,8 +9,8 @@ An `AmoebaFiber2D` is a representation of the fiber of the amoeba ``\\mathcal{A}
 at ``(w_1,w_2)`` where `f` is a bivariate polynomial.
 """
 mutable struct AmoebaFiber2D{T, E1, E2} <: AbstractAmoebaFiber{T, 2}
-    f_re::SP.Polynomial{T, 4, E1}
-    f_im::SP.Polynomial{T, 4, E2}
+    f_re::SP.Polynomial{T, E1, Nothing}
+    f_im::SP.Polynomial{T, E2, Nothing}
 
     # Tempory storage
     v::NTuple{2, Float64} # exp(w1), exp(w2)
@@ -27,8 +27,8 @@ An `AmoebaFiber3D` is a representation of the fiber of the amoeba ``\\mathcal{A}
 at ``(w_1, w_2, w_3)`` where `f` is a trivariate polynomial.
 """
 mutable struct AmoebaFiber3D{T, E1, E2} <: AbstractAmoebaFiber{T, 3}
-    f_re::SP.Polynomial{T, 6, E1}
-    f_im::SP.Polynomial{T, 6, E2}
+    f_re::SP.Polynomial{T, E1, Nothing}
+    f_im::SP.Polynomial{T, E2, Nothing}
 
     # Tempory storage
     v::NTuple{3, Float64} # exp(w1), exp(w2), exp(w3)
@@ -47,8 +47,8 @@ An `CoamoebaFiber2D` is a representation of the fiber of the coamoeba ``\\mathca
 at ``(θ_1, θ_2)`` where `f` is a bivariate polynomial.
 """
 mutable struct CoamoebaFiber2D{T, E1, E2} <: AbstractCoamoebaFiber{T, 2}
-    f_re::SP.Polynomial{T, 4, E1}
-    f_im::SP.Polynomial{T, 4, E2}
+    f_re::SP.Polynomial{T, E1, Nothing}
+    f_im::SP.Polynomial{T, E2, Nothing}
 
     # temporary storage
     sincosθ::NTuple{4, Float64}
@@ -57,8 +57,8 @@ mutable struct CoamoebaFiber2D{T, E1, E2} <: AbstractCoamoebaFiber{T, 2}
 end
 
 mutable struct CoamoebaFiber3D{T, E1, E2} <: AbstractCoamoebaFiber{T, 3}
-    f_re::SP.Polynomial{T, 6, E1}
-    f_im::SP.Polynomial{T, 6, E2}
+    f_re::SP.Polynomial{T, E1, Nothing}
+    f_im::SP.Polynomial{T, E2, Nothing}
 
     # temporary storage
     sincosθ::NTuple{6, Float64}
@@ -74,9 +74,9 @@ at ``(w_1, w_2)`` along a onedimensional affine subspace
 where `f` is a bivariate polynomial.
 """
 mutable struct ContourFiber2D{T, E1, E2, E3} <: AbstractContourFiber{T, 3}
-    f_re::SP.Polynomial{T, 4, E1}
-    f_im::SP.Polynomial{T, 4, E2}
-    g::SP.Polynomial{T, 4, E3}
+    f_re::SP.Polynomial{T, E1, Nothing}
+    f_im::SP.Polynomial{T, E2, Nothing}
+    g::SP.Polynomial{T, E3, Nothing}
     exponents::NTuple{3, Matrix{Int}}
     v_i::Float64
     x::SVector{4, Float64}
@@ -89,16 +89,16 @@ end
 abstract type AbstractImaginaryFiber{T, N} <: AbstractFiber{T, 2, N} end
 
 mutable struct ImaginaryFiber2D{T, E1, E2} <: AbstractImaginaryFiber{T, 2}
-    f_re::SP.Polynomial{T, 4, E1}
-    f_im::SP.Polynomial{T, 4, E2}
+    f_re::SP.Polynomial{T, E1, Nothing}
+    f_im::SP.Polynomial{T, E2, Nothing}
 
     y::NTuple{2, T}
     U::Matrix{T}
 end
 
 mutable struct ImaginaryFiber3D{T, E1, E2} <: AbstractImaginaryFiber{T, 3}
-    f_re::SP.Polynomial{T, 6, E1}
-    f_im::SP.Polynomial{T, 6, E2}
+    f_re::SP.Polynomial{T, E1, Nothing}
+    f_im::SP.Polynomial{T, E2, Nothing}
 
     y::NTuple{3, T}
     U::Matrix{T}
