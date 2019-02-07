@@ -2,6 +2,7 @@ name = "Amoebas"
 uuid = "488af916-e379-514a-af83-fcb2141d2ac0"
 license = "MIT"
 repo = "https://github.com/saschatimme/Amoebas.jl.git"
+author = ["Sascha Timme <timme@math.tu-berlin.de>"]
 version = "0.1.0"
 
 [deps]

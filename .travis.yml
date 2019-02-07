@@ -3,31 +3,35 @@ language: julia
 os:
   - linux
   # - osx
+
 julia:
   - 1.0
+  - 1.1
   - nightly
+
 notifications:
   email: false
+
 git:
   depth: 99999999
 
-## uncomment the following lines to allow failures on nightly julia
-## (tests will run but not make your overall status red)
 matrix:
  allow_failures:
  - julia: nightly
 
-# jobs:
-#    include:
-#      - stage: "Documentation"
-#        julia: 1.0
-#        os: linux
-#        script:
-#          - julia --project=docs/ -e 'using Pkg; Pkg.instantiate(); Pkg.add(PackageSpec(path=pwd()))'
-#          - julia --project=docs/ docs/make.jl
-#        after_success: skip
+env:
+   - JULIA_NUM_THREADS=2
 
-## uncomment the following lines to override the default test script
+jobs:
+  include:
+    - stage: "Documentation"
+      julia: 1.0
+      os: linux
+      script:
+        - julia --project=docs/ -e 'using Pkg; Pkg.instantiate(); Pkg.add(PackageSpec(path=pwd()))'
+        - julia --project=docs/ docs/make.jl
+      after_success: skip
+
 after_success:
   # push coverage results to Codecov
   - julia -e 'import Pkg; Pkg.add("Coverage"); using Coverage; Codecov.submit(process_folder())'

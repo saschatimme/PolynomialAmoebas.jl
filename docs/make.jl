@@ -1,7 +1,6 @@
 using Documenter, Amoebas
 
 makedocs(
-    format = :html,
     sitename = "Amoebas.jl",
     pages = [
         "Introduction" => "index.md",
