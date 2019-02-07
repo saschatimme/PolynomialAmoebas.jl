@@ -173,15 +173,15 @@ end
     @assert !isempty(curve.vertices) "Curve has no vertices"
 
     xmin, xmax, ymin, ymax = amoeba_carcase_domain_heuristic(curve)
-    if !haskey(d, :xlims)
+    if !haskey(plotattributes, :xlims)
         xlims --> (xmin, xmax)
     else
-        xmin, xmax = float.(d[:xlims])
+        xmin, xmax = float.(plotattributes[:xlims])
     end
-    if !haskey(d, :ylims)
+    if !haskey(plotattributes, :ylims)
         ylims --> (ymin, ymax)
     else
-        ymin, ymax = float.(d[:ylims])
+        ymin, ymax = float.(plotattributes[:ylims])
     end
 
     # grid --> false

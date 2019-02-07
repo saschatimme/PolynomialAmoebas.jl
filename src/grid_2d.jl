@@ -27,10 +27,10 @@ Base.size(G::Grid2D, i) = size(G)[i]
 Base.length(G::Grid2D) = prod(size(G))
 Base.ndims(G::Grid2D) = 3
 @inline function Base.getindex(G::Grid2D, k::Integer)
-    i, j = ind2sub(size(G), k)
+    i, j = _ind2sub(size(G), k)
     G[i, j]
 end
-
+Base.getindex(G::Grid2D, I::CartesianIndex{2}) = G[Tuple(I)...]
 @inline function Base.getindex(G::Grid2D, i::Integer, j::Integer)
     G.xrange[i], G.yrange[j]
 end

@@ -37,10 +37,10 @@ end
     xmin, xmax, ymin, ymax = limits(C.grid)
     @series begin
 
-        if !haskey(d, :xlims)
+        if !haskey(plotattributes, :xlims)
             xlims --> (xmin, xmax)
         end
-        if !haskey(d, :ylims)
+        if !haskey(plotattributes, :ylims)
             ylims --> (ymin, ymax)
         end
         aspect_ratio --> :equal
@@ -173,8 +173,7 @@ function _contour2D_grid(F::ContourFiber2D, grid::Grid2D,
 
     force_exit_y(x) = x[3] > ymax || x[3] < ymin
 
-    # Threads.@threads
-    for k=1:every_main_axis:length(w1s)
+    Threads.@threads for k=1:every_main_axis:length(w1s)
         G = Fs[Threads.threadid()]
         w1 = w1s[k]
         update_fiber!(G, w1)
@@ -202,8 +201,7 @@ function _contour2D_grid(F::ContourFiber2D, grid::Grid2D,
 
     force_exit_x(x) = x[3] > xmax || x[3] < ymin
 
-    # Threads.@threads
-    for k=1:every_main_axis:length(w2s)
+    Threads.@threads for k=1:every_main_axis:length(w2s)
         G = Fs[Threads.threadid()]
         w2 = w2s[k]
         update_fiber!(G, w2)

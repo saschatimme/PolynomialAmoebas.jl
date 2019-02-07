@@ -26,9 +26,10 @@ Base.length(G::Grid3D) = prod(size(G))
 Base.ndims(G::Grid3D) = 3
 
 @inline function Base.getindex(G::Grid3D, s::Integer)
-    i, j, k = ind2sub(size(G), s)
+    i, j, k = _ind2sub(size(G), s)
     G[i, j, k]
 end
+Base.getindex(G::Grid3D, I::CartesianIndex{3}) = G[Tuple(I)...]
 
 @inline function Base.getindex(G::Grid3D, i::Integer, j::Integer, k::Integer)
     G.xrange[i], G.yrange[j], G.zrange[k]

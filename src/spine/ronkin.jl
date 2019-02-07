@@ -49,7 +49,7 @@ function ronkinfunction(f, z, N)
     # sum = 0.0
     partition = partition_work(N)
     inner_range = 0:N-1
-    sums = Vector{Float64}(Threads.nthreads())
+    sums = Vector{Float64}(undef, Threads.nthreads())
     Threads.@threads for tid = 1:Threads.nthreads()
         r = shift_range(partition[tid], -1)
         partial_sum = ronkin_kernel(r, inner_range, f, h, e_x, e_y)
@@ -66,7 +66,7 @@ function ronkin_kernel(partial_outer_range, inner_range, f, h, e_x, e_y)
     for l in partial_outer_range, k in inner_range
         z1 = e_x * Base.FastMath.cis_fast(h*k)
         z2 = e_y * Base.FastMath.cis_fast(h*l)
-        partial_sum += Base.Math.JuliaLibm.log(Base.FastMath.abs_fast(f(SVector(z1, z2))))
+        partial_sum += log(Base.FastMath.abs_fast(f(SVector(z1, z2))))
     end
     partial_sum
 end
@@ -75,8 +75,8 @@ function ronkinpolynomial(p::MP.AbstractPolynomial, ronkincoeffs::Vector{Float64
     x, y = MP.variables(p)
     terms = map(ronkincoeffs, ccs) do r, cc
         i, j = order(cc)
-        # We truncate the coefficients after 14 digits to avoid numerical problems
-        r = trunc(r, 14)
+        # We truncate the coefficients after 12 digits to avoid numerical problems
+        r = trunc(r, digits=12)
         Amoebas.Tropical(r) * x^i * y^j
     end
     MP.polynomial(terms)

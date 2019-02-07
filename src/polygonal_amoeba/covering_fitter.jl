@@ -65,7 +65,7 @@ than the `desired_maximal_error` or `maximal_iterations` were executed.
 """
 function fit!(M::CoveringFitter; report_progress=false)
     k = 0
-    while !Base.done(M, k)
+    while !done(M, k)
         k += 1
         if report_progress && mod(k, 5) == 0
             println("Iteration: $k - Error: $(M.approximated_global_error)")
@@ -103,13 +103,15 @@ function Base.iterate(M::CoveringFitter, state=nothing)
     if state === nothing
         next_step!(M)
         M, state+1
-    elseif state > M.maximal_iterations || M.approximated_global_error < M.desired_maximal_error
+    elseif done(M, state)
         return nothing
     else
         next_step!(M)
         M, state + 1
     end
 end
+done(M::CoveringFitter, k) = k > M.maximal_iterations || M.approximated_global_error < M.desired_maximal_error
+
 Base.IteratorSize(::Type{<:CoveringFitter}) = Base.SizeUnknown()
 Base.eltype(::Type{<:CoveringFitter}) = M
 

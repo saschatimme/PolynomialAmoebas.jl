@@ -8,8 +8,7 @@ function simple_grid(F::AbstractFiber, grid, generator::StartValueGenerator, avo
     end
 
     partition = partition_work(length(grid))
-    # Threads.@threads 
-    for i=1:Threads.nthreads()
+    Threads.@threads for i=1:Threads.nthreads()
         simple_grid_kernel!(B, Fs[i], partition[i], grid, generator, avoid_check, options)
     end
     B

@@ -30,7 +30,7 @@ Returns a list of indices of the vertices of the convex hull.
 """
 function convexhull_vertices(line::Vector{<:Union{SVector{2, T}, NTuple{2, T}}}) where T<:Real
     m = length(line)
-    M = Array{T}(m, 2)
+    M = Matrix{T}(undef, m, 2)
     for k = 1:m
         i, j = line[k]
         M[k, 1] = i

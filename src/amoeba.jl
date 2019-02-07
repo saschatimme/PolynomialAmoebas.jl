@@ -168,10 +168,8 @@ function _amoeba(::Greedy, F::AmoebaFiber3D, f, grid, gen, options, callback)
     f_z0 = MP.subs(f, z => exp(grid.zrange[k0]))
     grid_k0 = Grid2D(grid.xrange, grid.yrange)
     contour_f_z0 = grid_contour(f_z0, grid_k0).data
-
-    initial_queue = map(find(contour_f_z0)) do k
-        i, j = ind2sub(contour_f_z0, k)
-        sub2ind((n1, n2, n3), i, j, k0)
+    initial_queue = map(findall(contour_f_z0)) do ij
+        CartesianIndex(Tuple(ij)..., k0)
     end
 
     greedy_grid(F, grid, gen, initial_queue, options=options, callback=callback)

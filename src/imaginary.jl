@@ -93,7 +93,7 @@ end
 function symmetry(B, k, grid, cache)
     y = grid[k]
     sym_sub = grid[0 .- y]
-    sym_k = sub2ind(size(grid), sym_sub...)
+    sym_k = _sub2ind(size(grid), sym_sub...)
     if 1 ≤ sym_k ≤ length(grid) && cache[sym_k]
         return true, B[sym_k]
     else
@@ -122,7 +122,7 @@ end
 function _imaginary_projection(::Greedy, F::ImaginaryFiber3D, f, grid, gen, options, callback, npasses)
     z = MP.variables(f)[end]
     B = empty(grid)
-    start_values = Array{SVector{3, Float64}}(size(grid))
+    start_values = Array{SVector{3, Float64}, 3}(undef, size(grid))
     grid_2d = Grid2D(grid.xrange, grid.yrange)
     for (k, z_k) in enumerate(grid.zrange)
         k % 2 == 0 && continue

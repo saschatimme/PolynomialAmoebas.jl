@@ -39,8 +39,8 @@ end
 
 _do_nothing(result, k, bitmap) = nothing
 
-function addneighbours!(queue, queued::BitMatrix, k::Integer)
-    i, j = ind2sub(queued, k)
+function addneighbours!(queue, queued::BitMatrix, ij)
+    i, j = Tuple(ij)
     i0 = max(i - 1, 1)
     i1 = min(i + 1, size(queued, 1))
 
@@ -49,13 +49,13 @@ function addneighbours!(queue, queued::BitMatrix, k::Integer)
     for jj = j0:j1, ii = i0:i1
         if !queued[ii, jj]
             queued[ii, jj] = true
-            push!(queue, sub2ind(queued, ii, jj))
+            push!(queue,  CartesianIndex(ii, jj))
         end
     end
 end
 
-function addneighbours!(queue, queued::BitArray{3}, l::Integer)
-    i, j, k = ind2sub(queued, l)
+function addneighbours!(queue, queued::BitArray{3}, ijk)
+    i, j, k = Tuple(ijk)
     i0 = max(i - 1, 1)
     i1 = min(i + 1, size(queued, 1))
 
@@ -67,18 +67,18 @@ function addneighbours!(queue, queued::BitArray{3}, l::Integer)
     for kk=k0:k1, jj = j0:j1, ii = i0:i1
         if !queued[ii, jj, kk]
             queued[ii, jj, kk] = true
-            push!(queue, sub2ind(queued, ii, jj, kk))
+            push!(queue, CartesianIndex(ii, jj, kk))
         end
     end
 end
 
 
-function initial_neighbour_queue(B::BitArray)
+function initial_neighbour_queue(B::BitArray{N}) where N
     queued = copy(B)
-    initial_queue = Int[]
-    for k = 1:length(B)
-        if B[k]
-            addneighbours!(initial_queue, queued, k)
+    initial_queue = CartesianIndex{N}[]
+    for (ind, val) in pairs(B)
+        if val
+            addneighbours!(initial_queue, queued, ind)
         end
     end
     initial_queue, queued
@@ -86,7 +86,7 @@ end
 
 # compared to `greedy_grid ` does this uses previous neighboring startvalues.
 function greedy_grid_memorized(F::AbstractFiber, grid, generator::StartValueGenerator,
-    initial_queue::Vector{<:Integer},
+    initial_queue::Vector,
     startvalues::Array,
     bitmap=empty(grid), queued=copy(bitmap.data); options=MembershipTestOptions())
     # queued = copy(bitmap.data)
@@ -123,8 +123,8 @@ function greedy_grid_memorized_kernel!(bitmap, queued, queue, startvalues, F::Ab
     end
 end
 
-function addneighbours!(queue, queued::BitMatrix, bitmap::Bitmap2D, k::Integer)
-    i, j = ind2sub(queued, k)
+function addneighbours!(queue, queued::BitMatrix, bitmap::Bitmap2D, k)
+    i, j = Tuple(k)
     i0 = max(i - 1, 1)
     i1 = min(i + 1, size(queued, 1))
 
@@ -133,13 +133,13 @@ function addneighbours!(queue, queued::BitMatrix, bitmap::Bitmap2D, k::Integer)
     for ii = i0:i1, jj = j0:j1
         if !queued[ii, jj] || !bitmap[ii, jj]
             queued[ii, jj] = true
-            push!(queue, sub2ind(queued, ii, jj))
+            push!(queue, CartesianIndex(ii, jj))
         end
     end
 end
 
-function addneighbours!(queue, queued::BitArray{3}, bitmap::Bitmap3D, l::Integer)
-    i, j, k = ind2sub(queued, l)
+function addneighbours!(queue, queued::BitArray{3}, bitmap::Bitmap3D, l)
+    i, j, k = Tuple(l)
     i0 = max(i - 1, 1)
     i1 = min(i + 1, size(queued, 1))
 
@@ -151,13 +151,13 @@ function addneighbours!(queue, queued::BitArray{3}, bitmap::Bitmap3D, l::Integer
     for ii = i0:i1, jj = j0:j1, kk=k0:k1
         if !queued[ii, jj, kk] || !bitmap[ii, jj, kk]
             queued[ii, jj, kk] = true
-            push!(queue, sub2ind(queued, ii, jj, kk))
+            push!(queue, CartesianIndex(ii, jj, kk))
         end
     end
 end
 function neighbor_startvalues!(out, F, startvalues, B::Bitmap2D, k)
     empty!(out)
-    i, j = ind2sub(size(B), k)
+    i, j = Tuple(k)
     offset = 1
     for jj in j-offset:j+offset, ii in i-offset:i+offset
         if safe_getindex(B, ii, jj) && !isnan(startvalues[ii, jj])
@@ -168,7 +168,7 @@ end
 
 function neighbor_startvalues!(out, F, startvalues, B::Bitmap3D, index)
     empty!(out)
-    i, j, k = ind2sub(size(B), index)
+    i, j, k = Tuple(index)
     offset = 1
     for kk in k-offset:k+offset, jj in j-offset:j+offset, ii in i-offset:i+offset
         if safe_getindex(B, ii, jj, kk) && !isnan(startvalues[ii, jj, kk])

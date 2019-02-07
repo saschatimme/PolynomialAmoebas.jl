@@ -40,13 +40,13 @@ end
         end
 
     else
-        clr = Colors.parse(Colors.Colorant, d[:seriescolor])
+        clr = Colors.parse(Colors.Colorant, plotattributes[:seriescolor])
         cmap = PlotUtils.ColorGradient([clr, clr])
         fillcolor := cmap
         colorbar := false
         aspect_ratio --> :equal
         data = map(x -> x ? 1.0 : NaN, M.data)
-        if !transparent d
+        if !transparent
             cmap = PlotUtils.ColorGradient([Colors.parse(Colors.Colorant, :white), clr])
             fillcolor := cmap
             data = map(x -> x ? 1.0 : 0.0, M.data)

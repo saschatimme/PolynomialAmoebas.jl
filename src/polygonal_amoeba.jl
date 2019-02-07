@@ -43,11 +43,11 @@ end
     aspect_ratio --> :equal
     for (p1, p2, p3, p4) in A.polygons
         @series begin
-            fillalpha--> get(d, :seriesalpha, 1.0)
+            fillalpha--> get(plotattributes, :seriesalpha, 1.0)
             linecolor --> :dodgerblue
             fillcolor --> :dodgerblue
             linewidth --> 1.0
-            linealpha --> get(d, :seriesalpha, get(d, :fillalpha, 1.0))
+            linealpha --> get(plotattributes, :seriesalpha, get(plotattributes, :fillalpha, 1.0))
             legend --> false
             st := :shape
             x1, y1 = p1

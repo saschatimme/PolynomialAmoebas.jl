@@ -1,12 +1,12 @@
 
 _isone(x::T) where T = x == one(T)
-
-function ind2sub(a, i)
+#
+function _ind2sub(a, i)
      i2s = CartesianIndices(a)
      Tuple(i2s[i])
 end
 
-function sub2ind(a,i...)
+function _sub2ind(a,i...)
       s2i = LinearIndices(a)
       s2i[i...]
 end
