@@ -23,8 +23,8 @@ env:
    - JULIA_NUM_THREADS=2
 
 install:
-  - julia -e 'import Pkg; Pkg.add("Conda"); ENV["PYTHON"]=""; Pkg.add("PyCall")'
-  - julia -e 'using Conda; Conda.add("scipy.spatial")'
+  - julia -e 'import Pkg; Pkg.add("Conda"); Pkg.add("PyCall")'
+  - julia -e 'import Pkg; ENV["PYTHON"]=""; Pkg.build("PyCall"); using Conda; Conda.add("scipy")'
 
 jobs:
   include:
