@@ -12,3 +12,8 @@ makedocs(
         "Reference" => "reference.md"
     ]
 )
+
+
+deploydocs(
+    repo = "github.com/saschatimme/Amoebas.jl.git",
+)
