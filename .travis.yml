@@ -22,6 +22,9 @@ matrix:
 env:
    - JULIA_NUM_THREADS=2
 
+install:
+  - pip install scipy
+
 jobs:
   include:
     - stage: "Documentation"
