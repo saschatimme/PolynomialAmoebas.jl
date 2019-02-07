@@ -103,7 +103,7 @@ Compute the intersection of the halfray starting at `origin` in direction `d` wi
 bounding window defined by `xmin`, `xmax`, `ymin` and `ymax`.
 This returns also two (opposite) `Direction`s which are parallel to the window border
 """
-function intersection_halfray_limits(origin::Point, d::Direction, xmin::Float64, xmax::Float64, ymin::Float64, ymax::Float64)
+function intersection_halfray_limits(origin::Point, d::Direction, xmin, xmax, ymin, ymax)
     x0, y0 = origin
     @assert xmin <= x0 <= xmax
     @assert ymin <= y0 <= ymax
