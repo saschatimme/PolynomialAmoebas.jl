@@ -23,7 +23,8 @@ env:
    - JULIA_NUM_THREADS=2
 
 install:
-  - pip3 install scipy
+  - julia -e 'import Pkg; Pkg.add("Conda"); ENV["PYTHON"]=""; Pkg.add("PyCall")'
+  - julia -e 'using Conda; Conda.add("scipy")'
 
 jobs:
   include:
