@@ -17,3 +17,9 @@ PyCall = "438e738f-606a-5dbb-bf0a-cddfbfd45ab0"
 RecipesBase = "3cdcf5f2-1ef4-517c-9805-6587b60abb01"
 StaticArrays = "90137ffa-7385-5640-81b9-e52037218182"
 StaticPolynomials = "62e018b1-6e46-5407-a5a7-97d4fbcae734"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]
