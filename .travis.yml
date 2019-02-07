@@ -23,7 +23,7 @@ env:
    - JULIA_NUM_THREADS=2
 
 install:
-  - pip install scipy
+  - pip3 install scipy
 
 jobs:
   include:
