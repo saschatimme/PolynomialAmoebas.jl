@@ -138,9 +138,7 @@ function boundary_approximation(F, startvalue_generator, origin::SVector{2}, dir
     if tol ≥ 1.0
         return 1.0
     end
-    # Δs = 0.5
-    while true
-        # k += 1
+    while s ≤ 1.0
         w = origin + (s + Δs) * direction
         if membershiptest(F, w, startvalue_generator, o).successfull
             s += Δs
@@ -151,6 +149,7 @@ function boundary_approximation(F, startvalue_generator, origin::SVector{2}, dir
             return s + 2Δs
         end
     end
+    return 1.0
 end
 
 

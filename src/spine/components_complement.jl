@@ -108,7 +108,6 @@ function point_in_complement(component_boundary, component_order, f::SP.Polynomi
                 end
             end
         catch err
-            @warn err
             # An error indicates that our complement component is not 2-dimensional
             # but rather a line. I.e. it is sufficient to consider the
             # average of all (unique) grid points on the line
@@ -123,7 +122,6 @@ function point_in_complement(component_boundary, component_order, f::SP.Polynomi
             if ord == component_order
                 return c
             else
-                @show component_order
                 throw(ErrorException("Cannot locate point in component with order $component_order."))
             end
         end
