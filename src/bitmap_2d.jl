@@ -6,7 +6,7 @@ Create an empty `Bitmap2D` from an grid.
 Bitmap2D(grid::Grid2D) = Bitmap2D(falses(size(grid)...), grid)
 
 Base.copy(M::Bitmap2D) = Bitmap2D(copy(M.data), M.grid)
-
+Base.length(M::Bitmap2D) = length(M.grid)
 Base.size(M::Bitmap2D) = size(M.grid)
 Base.size(M::Bitmap2D, i::Int64) = Base.size(M.grid, i)
 Base.ndims(M::Bitmap2D) = 2
@@ -14,6 +14,8 @@ Base.getindex(M::Bitmap2D, i) = getindex(M.data, i)
 Base.getindex(M::Bitmap2D, i, j) = getindex(M.data, i, j)
 Base.setindex!(M::Bitmap2D, x::Bool, i) = setindex!(M.data, x, i)
 Base.setindex!(M::Bitmap2D, x::Bool, i, j) = setindex!(M.data, x, i, j)
+
+Base.intersect(M₁::Bitmap2D, M₂::Bitmap2D) = Bitmap2D(M₁.data .& M₂.data, M₂.grid)
 
 function safe_getindex(M::Bitmap2D, i, j)
     if 1 ≤ i ≤ size(M.data, 1) && 1 ≤ j ≤ size(M.data, 2)
