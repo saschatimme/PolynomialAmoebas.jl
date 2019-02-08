@@ -18,8 +18,8 @@ matrix:
  allow_failures:
  - julia: nightly
 
-env:
-   - JULIA_NUM_THREADS=2
+# env:
+#    - JULIA_NUM_THREADS=2
 
 install:
   - julia -e 'import Pkg; Pkg.add("Conda"); Pkg.add("PyCall")'
