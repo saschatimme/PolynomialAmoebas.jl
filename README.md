@@ -5,6 +5,8 @@
 | [![][docs-stable-img]][docs-stable-url] | [![Build Status][build-img]][build-url] |
 | [![][docs-latest-img]][docs-latest-url] | [![Codecov branch][codecov-img]][codecov-url] |
 
+A package to compute [Amoebas](https://en.wikipedia.org/wiki/Amoeba_(mathematics)) in 2 and 3 variables.
+
 ## Installation
 Just do
 ```julia
