@@ -1,5 +1,5 @@
 name = "PolynomialAmoebas"
-uuid = "97b2c663-6afc-54c4-94ce-59e376ad867e"
+uuid = "438ff524-9f0e-576b-9874-0fc608798f85"
 license = "MIT"
 repo = "https://github.com/saschatimme/PolynomialAmoebas.jl.git"
 author = ["Sascha Timme <timme@math.tu-berlin.de>"]
