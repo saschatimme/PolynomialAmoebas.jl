@@ -20,9 +20,9 @@
     # want coverage results.
     - apt-get update
     - apt-get install bzip2 unzip make gcc git -y
-    - julia -e 'Pkg.clone(pwd()); Pkg.build("Amoebas"); Pkg.test("Amoebas"; coverage=true)'
+    - julia -e 'Pkg.clone(pwd()); Pkg.build("PolynomialAmoebas"); Pkg.test("PolynomialAmoebas"; coverage=true)'
     # Comment out below if you do not want coverage results.
-    - julia -e 'cd(Pkg.dir("Amoebas")); Pkg.add("Coverage");
+    - julia -e 'cd(Pkg.dir("PolynomialAmoebas")); Pkg.add("Coverage");
       using Coverage; cl, tl = get_summary(process_folder());
       println("(", cl/tl*100, "%) covered")'
 

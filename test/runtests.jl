@@ -1,7 +1,7 @@
-using Amoebas
+using PolynomialAmoebas
 using Test
 
-@testset "Amoebas" begin
+@testset "PolynomialAmoebas" begin
     include("fibers.jl")
     include("membership_test.jl")
     include("newton_test.jl")

@@ -291,7 +291,7 @@ With a change of variables we get
 ```math
 \frac{1}{2πi}∫_0^{2π}\frac{f'(e^{w_1}e^{iθ}, e^{w_2})}{f(e^{w_1}e^{iθ}, e^{w_2})}ie^{iθ}dθ
 ```
-[^1]: Forsberg, Mikael, Mikael Passare, and August Tsikh. "Laurent determinants and arrangements of hyperplane amoebas." Advances in mathematics 151.1 (2000): 45-70.
+[^1]: Forsberg, Mikael, Mikael Passare, and August Tsikh. "Laurent determinants and arrangements of hyperplane PolynomialAmoebas." Advances in mathematics 151.1 (2000): 45-70.
 """
 function order(f::SP.Polynomial, w, working_vec::AbstractVector, nsamples=128)
     v1 = 0.0im

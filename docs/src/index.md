@@ -1,13 +1,13 @@
-# Amoebas.jl
+# PolynomialAmoebas.jl
 
-Amoebas.jl is a package to compute and visualize the amoeba, coamoeba and imaginary projection
+PolynomialAmoebas.jl is a package to compute and visualize the amoeba, coamoeba and imaginary projection
 of bi- and trivariate polynomials as well as the contour and the spine of an two-dimensional amoeba.
 
 ## Getting started
 To construct polynomials we export the macro `@polyvar` from the [DynamicPolynomials.jl](https://github.com/JuliaAlgebra/DynamicPolynomials.jl) package.
 
 ```julia
-using Amoebas
+using PolynomialAmoebas
 # Create variables
 @polyvar x y
 # construct a polynomial

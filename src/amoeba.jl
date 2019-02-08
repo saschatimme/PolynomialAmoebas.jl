@@ -75,7 +75,7 @@ function amoeba(f::MP.AbstractPolynomial; kwargs...)
     elseif MP.nvariables(f) == 3
         F = AmoebaFiber3D(f)
     else
-        throw(error("Currently only 2 and 3-dimensional amoebas are supported."))
+        throw(error("Currently only 2 and 3-dimensional PolynomialAmoebas are supported."))
     end
     amoeba(F, f; kwargs...)
 end

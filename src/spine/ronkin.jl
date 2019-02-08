@@ -77,7 +77,7 @@ function ronkinpolynomial(p::MP.AbstractPolynomial, ronkincoeffs::Vector{Float64
         i, j = order(cc)
         # We truncate the coefficients after 12 digits to avoid numerical problems
         r = trunc(r, digits=12)
-        Amoebas.Tropical(r) * x^i * y^j
+        PolynomialAmoebas.Tropical(r) * x^i * y^j
     end
     MP.polynomial(terms)
 end

@@ -1,4 +1,4 @@
-# Amoebas.jl
+# PolynomialAmoebas.jl
 
 | **Documentation** | **Build Status** |
 |:-----------------:|:----------------:|
@@ -9,7 +9,7 @@
 Just do
 ```julia
 julia> using Pkg;
-julia> pkg"add https://github.com/saschatimme/Amoebas.jl";
+julia> pkg"add https://github.com/saschatimme/PolynomialAmoebas.jl";
 ```
 in a running Julia session.
 
@@ -19,7 +19,7 @@ in a running Julia session.
 To construct polynomials we export the macro `@polyvar` from the [DynamicPolynomials.jl](https://github.com/JuliaAlgebra/DynamicPolynomials.jl) package.
 
 ```julia
-using Amoebas
+using PolynomialAmoebas
 # Create variables
 @polyvar x y
 # construct a polynomial
@@ -38,15 +38,15 @@ using Plots
 plot(A)
 ```
 
-There is also a Jupyter notebook [available](https://github.com/saschatimme/Amoebas.jl/blob/master/docs/notebooks/Overview.ipynb) to get an overview over the capabilties of the package.
+There is also a Jupyter notebook [available](https://github.com/saschatimme/PolynomialAmoebas.jl/blob/master/docs/notebooks/Overview.ipynb) to get an overview over the capabilties of the package.
 In order to set everything up for this follow the instructions in the [IJulia.jl](https://github.com/JuliaLang/IJulia.jl) repository.
 
 [docs-stable-img]: https://img.shields.io/badge/docs-stable-blue.svg
 [docs-latest-img]: https://img.shields.io/badge/docs-latest-blue.svg
-[docs-stable-url]: https://saschatimme.github.io/Amoebas.jl/stable
-[docs-latest-url]: https://saschatimme.github.io/Amoebas.jl/latest
+[docs-stable-url]: https://saschatimme.github.io/PolynomialAmoebas.jl/stable
+[docs-latest-url]: https://saschatimme.github.io/PolynomialAmoebas.jl/latest
 
-[build-img]: https://travis-ci.org/saschatimme/Amoebas.jl.svg?branch=master
-[build-url]: https://travis-ci.org/saschatimme/Amoebas.jl
-[codecov-img]: https://codecov.io/gh/saschatimme/Amoebas.jl/branch/master/graph/badge.svg
-[codecov-url]: https://codecov.io/gh/saschatimme/Amoebas.jl
+[build-img]: https://travis-ci.org/saschatimme/PolynomialAmoebas.jl.svg?branch=master
+[build-url]: https://travis-ci.org/saschatimme/PolynomialAmoebas.jl
+[codecov-img]: https://codecov.io/gh/saschatimme/PolynomialAmoebas.jl/branch/master/graph/badge.svg
+[codecov-url]: https://codecov.io/gh/saschatimme/PolynomialAmoebas.jl

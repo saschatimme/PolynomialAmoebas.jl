@@ -11,7 +11,7 @@
     f = x^2+y^2+z^2+1
     F = AmoebaFiber3D(f)
     grid = Grid3D(xlims=(-2, 2), ylims=(-2, 2), zlims=(-2, 2), res=(21, 21, 21))
-    A3 = Amoebas.amoeba(f, grid=grid, alg=Greedy())
+    A3 = PolynomialAmoebas.amoeba(f, grid=grid, alg=Greedy())
     @test any(A3.data)
 
     I3 = imaginary_projection(f, grid=grid, alg=Greedy())

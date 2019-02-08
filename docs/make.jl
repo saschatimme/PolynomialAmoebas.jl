@@ -1,7 +1,7 @@
-using Documenter, Amoebas
+using Documenter, PolynomialAmoebas
 
 makedocs(
-    sitename = "Amoebas.jl",
+    sitename = "PolynomialAmoebas.jl",
     pages = [
         "Introduction" => "index.md",
         "Amoeba" => "amoeba.md",
@@ -15,5 +15,5 @@ makedocs(
 
 
 deploydocs(
-    repo = "github.com/saschatimme/Amoebas.jl.git",
+    repo = "github.com/saschatimme/PolynomialAmoebas.jl.git",
 )

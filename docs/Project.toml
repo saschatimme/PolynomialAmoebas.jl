@@ -1,4 +1,5 @@
 [deps]
+PolynomialAmoebas = "488af916-e379-514a-af83-fcb2141d2ac0"
 Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
 
 [compat]

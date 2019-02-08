@@ -23,6 +23,6 @@
     @polyvar x y
     f = x^2*y + y^2 + 3x^2*y^3 + y^4 + x^4*y^4
     newt = newtonpolygon(f)
-    @test Amoebas.on_boundary(newt, [2, 3]) == false
-    @test Amoebas.iscontained(newt, [2, 3])
+    @test PolynomialAmoebas.on_boundary(newt, [2, 3]) == false
+    @test PolynomialAmoebas.iscontained(newt, [2, 3])
 end
