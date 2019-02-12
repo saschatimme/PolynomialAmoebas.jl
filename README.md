@@ -11,7 +11,7 @@ A package to compute [Amoebas](https://en.wikipedia.org/wiki/Amoeba_(mathematics
 Just do
 ```julia
 julia> using Pkg;
-julia> pkg"add https://github.com/saschatimme/PolynomialAmoebas.jl";
+julia> pkg"add PolynomialAmoebas";
 ```
 in a running Julia session.
 
