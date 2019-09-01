@@ -19,124 +19,110 @@ function newtonpolygon(p::MP.AbstractPolynomial{<:Complex})
     return newtonpolygon(lattices)
 end
 
-function newtonpolygon(lattices::Vector{SVector{2, Int}})
-    vertices, facets = vertices_facets(lattices)
-    NewtonPolygon(lattices, vertices, facets, Vector{Vector{Int}}())
-end
-function newtonpolygon(lattices::Vector{SVector{2, Int}}, coefficients::AbstractVector{<:Real}; lowerhull=false)
-    vertices, facets = vertices_facets(lattices)
-    try
-        subdivision = newtonsubdivision(lattices, coefficients, lowerhull)
-        return NewtonPolygon(lattices, vertices, facets, subdivision)
-    catch err
-        subdivision = [vertices]
-        return NewtonPolygon(lattices, vertices, facets, subdivision)
+function newtonpolygon(lattice_points::Vector{SVector{2, Int}}, lift::Union{Nothing,AbstractVector{<:Real}}=nothing; lowerhull=false)
+    P = Polyhedra.polyhedron(Polyhedra.vrep(lattice_points), CDDLib.Library())
+    Polyhedra.removevredundancy!(P)
+    if Polyhedra.dim(P) != 2
+        throw(AssertionError("Newton polygon is not fulldimensional"))
     end
 
+    vpts = sort_counterclockwise(collect(Polyhedra.points(P)))
+    vertices = map(vpts) do v
+        for (i,p) in enumerate(lattice_points)
+            p == v && return i
+        end
+    end
+
+    # facets
+    idx = Int[]
+    for p in vpts
+        for vid in vertices
+            if p == lattice_points[vid]
+                push!(idx, vid)
+                break
+            end
+        end
+    end
+    # iterate reverse to obtain counter-clockwise order
+    facets = [SVector(idx[i], idx[i+1]) for i in 1:length(idx)-1]
+    push!(facets, SVector(idx[end], idx[1]))
+
+    # subdivison
+    subdivision = Vector{Int}[]
+    if lift !== nothing
+        lifted_pts = map((p, w) -> [p;w], lattice_points, lift)
+        lifted_P = Polyhedra.polyhedron(Polyhedra.vrep(lifted_pts), CDDLib.Library())
+        Polyhedra.removevredundancy!(lifted_P)
+        if Polyhedra.dim(lifted_P) == 2
+            push!(subdivision, copy(vertices))
+        else
+            hspaces = Polyhedra.halfspaces(lifted_P)
+            for (idx, H) in zip(eachindex(hspaces), hspaces)
+                if (lowerhull ? H.a[end] < 0 : H.a[end] > 0)
+                    ipts = Polyhedra.incidentpoints(lifted_P, idx)
+                    pts = sort_counterclockwise(map(p -> SVector(p[1], p[2]), ipts))
+                    push!(subdivision, map(pts) do p
+                        for (i, v) in enumerate(lattice_points)
+                            p[1] == v[1] && p[2] == v[2] && return i
+                        end
+                    end)
+                end
+            end
+        end
+    end
+
+    return NewtonPolygon(lattice_points, vertices, facets, subdivision)
+end
+
+function getsemihull(ps::Vector{PT}, sign_sense, counterclockwise, yray = nothing) where PT
+    hull = PT[]
+    if length(ps) == 0
+        return hull
+    end
+    prev = sign_sense == 1 ? first(ps) : last(ps)
+    cur = prev
+    for j in (sign_sense == 1 ? (2:length(ps)) : ((length(ps)-1):-1:1))
+        while prev != cur && counterclockwise(cur - prev, ps[j] - prev) >= 0
+            cur = prev
+            pop!(hull)
+            if !isempty(hull)
+                prev = last(hull)
+            end
+        end
+        if yray !== nothing && counterclockwise(ps[j] - cur, yray) >= 0
+            break
+        else
+            push!(hull, cur)
+            prev = cur
+            cur = ps[j]
+        end
+    end
+    push!(hull, cur)
+    hull
+end
+
+function sort_counterclockwise(ps)
+    sort!(ps, by = first)
+    counterclockwise(p1, p2) = dot(cross([p1; 0], [p2; 0]), [0, 0, 1])
+    top = getsemihull(ps,  1, counterclockwise)
+    bot = getsemihull(ps, -1, counterclockwise)
+    if !isempty(top) && !isempty(bot)
+        @assert top[end] == bot[1]
+        pop!(top)
+    end
+    if !isempty(bot) && !isempty(top)
+        @assert bot[end] == top[1]
+        pop!(bot)
+    end
+    sort!(top, rev=true)
+    sort!(bot)
+    [top; bot]
 end
 
 function newtonpolygon(exponents::Matrix)
     @assert size(exponents, 1) == 2 "Expected a bivariate polynomial"
     lattices = [SVector(exponents[1, j], exponents[2, j]) for j=1:size(exponents, 2)]
     newtonpolygon(lattices)
-end
-
-function vertices_facets(lattices)
-    vertices = Vector{Int}()
-    try
-        hull = convexhull([lattices[i][j] for i=1:length(lattices), j=1:2])
-        vertices = hull.vertices
-    catch err
-        throw(AssertionError("Newton polygon is not fulldimensional"))
-        # we have a degenerate case...
-        if length(lattices) == 2
-            vertices = [1, 2]
-        elseif length(lattices) == 1
-            vertices = [1]
-        elseif length(lattices) > 2
-            # the points are coplanar
-            vertices = [1, length(lattices)]
-        end
-    end
-
-    # vertices are in counter clockwise orders
-    facets = Vector{SVector{2,Int}}()
-    n = length(vertices)
-    for i = 1:n
-        push!(facets, SVector(vertices[i], vertices[i%n + 1]))
-    end
-
-    vertices, facets
-end
-
-"""
-    newtonsubdivision(lattices, coefficients::AbstractVector{<:Real})
-
-compute the subdivion of the newton polygon. This can throw if the lattices
-are not generic enough
-"""
-function newtonsubdivision(lattices, coeffs::AbstractVector{<:Real}, lowerhull=false)
-    nterms = length(lattices)
-    subdivision = Vector{Vector{Int}}()
-    if nterms == 3
-        push!(subdivision, [1, 2, 3])
-    elseif nterms > 3
-        liftedvertices = Matrix{Float64}(undef, nterms, 3)
-        for i in eachindex(lattices)
-            liftedvertices[i, 1] = lattices[i][1]
-            liftedvertices[i, 2] = lattices[i][2]
-            liftedvertices[i, 3] = coeffs[i]
-        end
-
-
-        hull = convexhull(liftedvertices)
-        simplices = Vector{Vector{Int}}()
-        equations = Vector{Vector{Float64}}()
-        for (i, simplex) in enumerate(hull.simplices)
-            if lowerhull ?  hull.equations[i,3] < 0.0 : hull.equations[i,3] > 0.0
-                push!(simplices, simplex)
-                push!(equations, hull.equations[i,:])
-            end
-        end
-
-        # Problem is now that the scipy always returns a triangulation
-        # Therefore we have to manually put the simplices together again
-        n = length(simplices)
-
-        to_get_ordered = Vector{Vector{Int}}()
-        handled = falses(n)
-        for i=1:n
-            if handled[i]
-                continue
-            end
-            eq = equations[i]
-            s = simplices[i]
-            merged_something = false
-            for j=i+1:n
-                if handled[j]
-                    continue
-                end
-                if equations[j] == eq
-                    append!(s, simplices[j])
-                    merged_something = true
-                    handled[j] = true
-                end
-            end
-            if merged_something
-                push!(to_get_ordered, unique(s))
-            else
-                push!(subdivision, s)
-            end
-        end
-
-        for x in to_get_ordered
-            h = convexhull([lattices[i][j] for i in x, j=1:2])
-            push!(subdivision, x[h.vertices])
-        end
-    else
-        error("Newton polygon is not full dimensional")
-    end
-    subdivision
 end
 
 """
@@ -217,4 +203,27 @@ end
         markersize --> 6
         unzip(lattices(newt))
     end
+end
+
+"""
+    convexhull_vertices(line::Vector{Tuple{Int, Int}})
+
+Returns a list of indices of the vertices of the convex hull.
+"""
+function convexhull_vertices(points::Vector{NTuple{2, T}}) where {T<:Real}
+    convexhull_vertices(SVector.(points))
+end
+function convexhull_vertices(points::Vector{SVector{2, T}}) where {T<:Real}
+    P = Polyhedra.polyhedron(Polyhedra.vrep(points), CDDLib.Library())
+    Polyhedra.removevredundancy!(P)
+    if Polyhedra.dim(P) != 2
+        throw(ArgumentError("points are not full dimensional"))
+    end
+    vpts = sort_counterclockwise(collect(Polyhedra.points(P)))
+    vertices = map(vpts) do v
+        for (i,p) in enumerate(points)
+            p == v && return i
+        end
+    end
+    vertices
 end

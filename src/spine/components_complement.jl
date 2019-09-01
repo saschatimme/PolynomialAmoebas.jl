@@ -80,6 +80,7 @@ function components_complement(M::Bitmap2D, F::AmoebaFiber2D, f::SP.Polynomial{T
             end
             push!(components, ComponentComplement{2}(α, c, bounded))
         catch err
+            @warn err
         end
     end
 
@@ -108,6 +109,7 @@ function point_in_complement(component_boundary, component_order, f::SP.Polynomi
                 end
             end
         catch err
+            @warn err
             # An error indicates that our complement component is not 2-dimensional
             # but rather a line. I.e. it is sufficient to consider the
             # average of all (unique) grid points on the line
@@ -135,7 +137,7 @@ end
 Compute the average of the contour
 """
 function boundary_average(boundary::Vector{NTuple{2, Int}}, grid::Grid2D)
-    mean(p -> grid[p], boundary)
+    mean(p -> SVector(grid[p]), boundary)
 end
 
 function centroid(b::Vector{NTuple{2, Int}}, grid::Grid2D)

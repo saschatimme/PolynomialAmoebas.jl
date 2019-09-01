@@ -2,13 +2,13 @@ module PolynomialAmoebas
 
     using StaticArrays
     using RecipesBase
-    using PyCall
     using LinearAlgebra
 
     import MultivariatePolynomials
     const MP = MultivariatePolynomials
     import StaticPolynomials
     const SP = StaticPolynomials
+    import CDDLib, Polyhedra
 
     import DynamicPolynomials: @polyvar
 
@@ -18,7 +18,7 @@ module PolynomialAmoebas
     import PlotUtils
     import Contour
     import DataStructures: PriorityQueue, enqueue!, dequeue!, peek, dequeue_pair!
-
+    import Statistics: mean
 
     include("types.jl")
     include("utilities.jl")
@@ -38,7 +38,6 @@ module PolynomialAmoebas
     include("membership_test_startvalues.jl")
     include("membership_test.jl")
 
-    include("convexhull.jl")
     include("newtonpolygon.jl")
 
     include("grid_2d.jl")
