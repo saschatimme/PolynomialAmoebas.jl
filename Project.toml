@@ -21,6 +21,7 @@ StaticPolynomials = "62e018b1-6e46-5407-a5a7-97d4fbcae734"
 Statistics = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
 
 [compat]
+julia = "^1"
 CDDLib = "^0.5.2"
 Colors = "^0.9.6"
 Contour = "^0.5.1"
