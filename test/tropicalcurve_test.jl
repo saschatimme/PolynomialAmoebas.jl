@@ -7,15 +7,15 @@
     n2 = [-log(2), 0.0]
     n1 = [log(2), log(2)]
     @test vertices(t)[1] ≈ n1
-    @test vertices(t)[2] ≈ n2
-    @test vertices(t)[3] ≈ n3
+    @test vertices(t)[2] ≈ n3
+    @test vertices(t)[3] ≈ n2
 
     @test segments(t)[1][1] ≈ n1
-    @test segments(t)[1][2] ≈ n2
+    @test segments(t)[1][2] ≈ n3
     @test segments(t)[2][1] ≈ n1
-    @test segments(t)[2][2] ≈ n3
-    @test segments(t)[3][1] ≈ n2
-    @test segments(t)[3][2] ≈ n3
+    @test segments(t)[2][2] ≈ n2
+    @test segments(t)[3][1] ≈ n3
+    @test segments(t)[3][2] ≈ n2
 
     @test length(halfrays(t)) == 3
 

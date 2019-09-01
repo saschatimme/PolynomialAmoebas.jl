@@ -19,7 +19,7 @@ function newtonpolygon(p::MP.AbstractPolynomial{<:Complex})
     return newtonpolygon(lattices)
 end
 
-function newtonpolygon(lattice_points::Vector{SVector{2, Int}}, lift::AbstractVector{<:Real}=nothing; lowerhull=false)
+function newtonpolygon(lattice_points::Vector{SVector{2, Int}}, lift::Union{Nothing,AbstractVector{<:Real}}=nothing; lowerhull=false)
     P = Polyhedra.polyhedron(Polyhedra.vrep(lattice_points), CDDLib.Library())
     Polyhedra.removevredundancy!(P)
     if Polyhedra.dim(P) != 2
@@ -114,8 +114,8 @@ function sort_counterclockwise(ps)
         @assert bot[end] == top[1]
         pop!(bot)
     end
-    sort!(top; by=first, rev=true)
-    sort!(bot; by=first)
+    sort!(top, rev=true)
+    sort!(bot)
     [top; bot]
 end
 
@@ -203,4 +203,27 @@ end
         markersize --> 6
         unzip(lattices(newt))
     end
+end
+
+"""
+    convexhull_vertices(line::Vector{Tuple{Int, Int}})
+
+Returns a list of indices of the vertices of the convex hull.
+"""
+function convexhull_vertices(points::Vector{NTuple{2, T}}) where {T<:Real}
+    convexhull_vertices(SVector.(points))
+end
+function convexhull_vertices(points::Vector{SVector{2, T}}) where {T<:Real}
+    P = Polyhedra.polyhedron(Polyhedra.vrep(points), CDDLib.Library())
+    Polyhedra.removevredundancy!(P)
+    if Polyhedra.dim(P) != 2
+        throw(ArgumentError("points are not full dimensional"))
+    end
+    vpts = sort_counterclockwise(collect(Polyhedra.points(P)))
+    vertices = map(vpts) do v
+        for (i,p) in enumerate(points)
+            p == v && return i
+        end
+    end
+    vertices
 end

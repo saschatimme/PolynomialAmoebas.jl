@@ -18,6 +18,7 @@ module PolynomialAmoebas
     import PlotUtils
     import Contour
     import DataStructures: PriorityQueue, enqueue!, dequeue!, peek, dequeue_pair!
+    import Statistics: mean
 
     include("types.jl")
     include("utilities.jl")

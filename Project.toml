@@ -3,7 +3,7 @@ uuid = "438ff524-9f0e-576b-9874-0fc608798f85"
 license = "MIT"
 author = ["Sascha Timme <timme@math.tu-berlin.de>"]
 repo = "https://github.com/saschatimme/PolynomialAmoebas.jl.git"
-version = "0.1.0"
+version = "0.1.1"
 
 [deps]
 CDDLib = "3391f64e-dcde-5f30-b752-e11513730f60"
@@ -15,10 +15,23 @@ LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
 MultivariatePolynomials = "102ac46a-7ee4-5c85-9060-abc95bfdeaa3"
 PlotUtils = "995b91a9-d308-5afd-9ec6-746e21dbc043"
 Polyhedra = "67491407-f73d-577b-9b50-8179a7c68029"
-PyCall = "438e738f-606a-5dbb-bf0a-cddfbfd45ab0"
 RecipesBase = "3cdcf5f2-1ef4-517c-9805-6587b60abb01"
 StaticArrays = "90137ffa-7385-5640-81b9-e52037218182"
 StaticPolynomials = "62e018b1-6e46-5407-a5a7-97d4fbcae734"
+Statistics = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
+
+[compat]
+CDDLib = "^0.5.2"
+Colors = "^0.9.6"
+Contour = "^0.5.1"
+DataStructures = "^0.17"
+DynamicPolynomials = "^0.3"
+MultivariatePolynomials = "^0.3"
+PlotUtils = "^0.5.8"
+Polyhedra = "^0.5.3"
+RecipesBase = "^0.7"
+StaticArrays = "^0.11"
+StaticPolynomials = "^1.3"
 
 [extras]
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
