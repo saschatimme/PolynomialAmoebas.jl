@@ -3,7 +3,7 @@ uuid = "438ff524-9f0e-576b-9874-0fc608798f85"
 license = "MIT"
 author = ["Sascha Timme <timme@math.tu-berlin.de>"]
 repo = "https://github.com/saschatimme/PolynomialAmoebas.jl.git"
-version = "0.1.1"
+version = "1.0.0"
 
 [deps]
 CDDLib = "3391f64e-dcde-5f30-b752-e11513730f60"
