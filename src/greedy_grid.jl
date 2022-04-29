@@ -155,12 +155,17 @@ function addneighbours!(queue, queued::BitArray{3}, bitmap::Bitmap3D, l)
         end
     end
 end
+
+isnan_(x) = isnan(x)
+isnan_(x::StaticArrays.SVector{2}) = isnan(x[1]) || isnan(x[2])
+isnan_(x::StaticArrays.SVector{3}) = isnan(x[1]) || isnan(x[2]) || isnan(x[3])
+
 function neighbor_startvalues!(out, F, startvalues, B::Bitmap2D, k)
     empty!(out)
     i, j = Tuple(k)
     offset = 1
     for jj in j-offset:j+offset, ii in i-offset:i+offset
-        if safe_getindex(B, ii, jj) && !isnan(startvalues[ii, jj])
+        if safe_getindex(B, ii, jj) && !isnan_(startvalues[ii, jj])
             predict_startvalue!(out, F, startvalues[ii, jj], B.grid[ii, jj], B.grid[k])
         end
     end
@@ -171,7 +176,7 @@ function neighbor_startvalues!(out, F, startvalues, B::Bitmap3D, index)
     i, j, k = Tuple(index)
     offset = 1
     for kk in k-offset:k+offset, jj in j-offset:j+offset, ii in i-offset:i+offset
-        if safe_getindex(B, ii, jj, kk) && !isnan(startvalues[ii, jj, kk])
+        if safe_getindex(B, ii, jj, kk) && !isnan_(startvalues[ii, jj, kk])
             predict_startvalue!(out, F, startvalues[ii, jj, kk], B.grid[ii, jj, kk], B.grid[index])
         end
     end

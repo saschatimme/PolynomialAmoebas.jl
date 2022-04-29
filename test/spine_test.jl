@@ -4,11 +4,7 @@
 
     S = spine(f)
     @test length(components_complement(S)) == 5
-    @test sprint(show, S) ==
-        """Spine2D{DynamicPolynomials.Polynomial{true,Tropical{Float64}}} with:
-            $(" ")* 4 vertices
-            $(" ")* 4 half-rays
-            $(" ")* 1 bounded cells"""
+    @test sprint(show, S) == "Spine2D{DynamicPolynomials.Polynomial{true, Tropical{Float64}}} with:\n * 4 vertices\n * 4 half-rays\n * 1 bounded cells"
     S = spine(f, minimal_component_size=0.05)
     @test length(components_complement(S)) == 5
 
